@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+	<aop:aspectj-autoproxy />
+
+	<mvc:annotation-driven />
+	
+	<mvc:resources location="/resources/" mapping="/resources/**" />
+	
+	<context:annotation-config />
+	
+	<context:component-scan base-package="com.avishek" />
+
+	<task:annotation-driven />
+
+	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/**/*" /> <bean 
+		class="com.axisbankcmspaypro.filter.AuthorizationInterceptor"></bean> </mvc:interceptor> 
+		</mvc:interceptors> -->
+		
+		<!-- <bean id="TaskScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+		<property name="waitForTasksToCompleteOnShutdown" value="true" />
+		<property name="poolSize" value="1000" />
+	</bean> -->
+	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="packagesToScan" value="com.avishek.entity" />
+		<property name="entityInterceptor" ref="entityIntercepter" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<context:property-placeholder properties-ref="deployProperties" />
+	
+	<!-- Activate Spring Data MongoDB repository support -->
+	<mongo:repositories base-package="org.sab.sampleqa.data.repo" />
+
+	<!-- MongoDB host -->
+	<mongo:mongo host="localhost" port="27017" id="mongoPort"/>
+	<mongo:db-factory dbname="reaction_collections" mongo-ref="mongoPort" id="mongodbFactory"/>
+
+	<!-- Template for performing MongoDB operations -->
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate" >
+		<constructor-arg name="mongoDbFactory" ref="mongodbFactory" />
+	</bean>
+</beans>
