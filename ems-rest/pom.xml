@@ -56,6 +56,12 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.abc.xyz</groupId>
+			<artifactId>ems-business</artifactId>
+			<version>${global.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>ems-rest</finalName>
