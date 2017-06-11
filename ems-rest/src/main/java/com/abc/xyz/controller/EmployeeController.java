@@ -1,9 +1,7 @@
 package com.abc.xyz.controller;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.abc.xyz.model.EmployeeModel;
@@ -13,8 +11,7 @@ import com.abc.xyz.response.ResponseEntity;
 public class EmployeeController extends AbstractGenericController{
 
 	@RequestMapping(value="/employee", method=RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<?> create(@RequestBody EmployeeModel employeeModel) {
+	public ResponseEntity<?> create(EmployeeModel employeeModel) {
 		final ResponseEntity<?> responseEntity = new ResponseEntity<>();
 		
 		try {
