@@ -28,6 +28,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.abc.xyz</groupId>
+			<artifactId>ems-converter</artifactId>
+			<version>${global.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>

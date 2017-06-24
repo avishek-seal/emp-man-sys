@@ -45,7 +45,7 @@
 	</bean>
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="packagesToScan" value="com.avishek.entity" />
+		<property name="packagesToScan" value="com.abc.xyz.entity" />
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />

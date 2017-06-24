@@ -3,21 +3,26 @@ package com.abc.xyz.business.impl;
 import java.io.Serializable;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.abc.xyz.business.spec.EmployeeBusiness;
+import com.abc.xyz.converter.EmployeeConverter;
 import com.abc.xyz.entity.Employee;
 import com.abc.xyz.model.EmployeeModel;
 
 @Transactional
 @Service
 public class EmployeeBusinessImpl extends AbstractBaseBusiness<EmployeeModel> implements EmployeeBusiness{
-
+	
+	@Autowired
+	private EmployeeConverter converter;
+	
 	@Override
 	public void create(EmployeeModel m) {
 		if(m != null) {
-			final Employee employee = new Employee();
+			/*final Employee employee = new Employee();
 			
 			if(m.getDateOfBirth() != null) {
 				employee.setDateOfBirth(m.getDateOfBirth());
@@ -31,16 +36,15 @@ public class EmployeeBusinessImpl extends AbstractBaseBusiness<EmployeeModel> im
 				throw new RuntimeException("Invalid Name");
 			}
 			
-			employee.setSalary(m.getSalary());
+			employee.setSalary(m.getSalary());*/
 			
-			getDaoProvider().getEmployeeDAO().create(employee);
+			getDaoProvider().getEmployeeDAO().create(converter.convertToEntyity(m));
 		}
 	}
 
 	@Override
 	public void update(EmployeeModel m) {
-		// TODO Auto-generated method stub
-		
+		getDaoProvider().getEmployeeDAO().update(converter.convertToEntyity(m));
 	}
 
 	@Override
@@ -51,8 +55,7 @@ public class EmployeeBusinessImpl extends AbstractBaseBusiness<EmployeeModel> im
 
 	@Override
 	public EmployeeModel get(Serializable id) {
-		// TODO Auto-generated method stub
-		return null;
+		return converter.convertToModel(getDaoProvider().getEmployeeDAO().get(id));
 	}
 
 	@Override
